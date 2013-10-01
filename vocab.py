@@ -83,7 +83,10 @@ def homeworkify(file1,terms,prenum = '', postnum = '.', splitter = ': '):
             while set(tried) != set(terms):
                 term = terms[randint(0,len(terms)-1)]
                 try:
-                    defin = glos[term]
+                   # defin = glos[term]
+                    defin = get_def(term)
+                    if defin is None:
+                        raise TypeError
                     break
                 except:
                     tried.append(term)
