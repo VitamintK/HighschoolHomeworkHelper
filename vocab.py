@@ -1,3 +1,7 @@
+#import requests
+#import json
+from dictionary import *
+
 def parse_glos(file1):
     with open(file1,'r') as p:
         terms = {}
@@ -68,7 +72,9 @@ def homeworkify(file1,terms,prenum = '', postnum = '.', splitter = ': '):
     for term in (term.lower() for term in terms):
         i+=1
         try:
-            defin = glos[term]
+            defin = get_def(term)
+            if defin is None:
+                raise TypeError
         except:
             print term + ' not found'
             from random import randint
@@ -85,3 +91,9 @@ def homeworkify(file1,terms,prenum = '', postnum = '.', splitter = ': '):
         homework_str+=str(i) + postnum + ' ' + term + splitter + defin + '\n'
     return homework_str
         
+"""def get_google_def(word):
+    r = requests.get("http://www.google.com/dictionary/"
+                     "json?callback=dict_api.callbacks.id100&q="+word+
+                     "&sl=en&tl=en&restrict=pr%2Cde&client=te")
+    print r.text
+    print json.load(r.text)"""
