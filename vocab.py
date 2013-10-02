@@ -2,6 +2,11 @@
 #import json
 from dictionary import *
 from random import randint
+import re
+
+def alphanumeric(word):
+    """cleans everything except letters and numbers and commas and spaces and single quotes."""
+    return re.sub(r'[^a-zA-Z0-9 ,\']', ' ', word)
 
 def parse_glos(file1):
     with open(file1,'r') as p:
@@ -64,7 +69,9 @@ def homeworkify_ui(file1):
 
 def homeworkify_ui_batch(subject="", file1=None):
     """input a comma separated list, and return a homeworkified list."""
-    terms = raw_input('Enter terms separated by commas: ')
+    terms = alphanumeric(raw_input('Enter terms separated by commas: '))
+    #sanitizing here is more efficient than doing it in homeworkify()
+    #although cleaning out the extra chars in homeworkify would be better.
     terms = [term.strip() for term in terms.split(',')]
     return homeworkify(terms,subject=subject,file1=file1)
 

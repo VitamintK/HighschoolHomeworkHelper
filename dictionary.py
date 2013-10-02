@@ -49,14 +49,16 @@ def get_def(word):
 			if i["type"]=="meaning":
 				ans=i["terms"]
 				op=check(checkq(ans[0]['text']))
-				print op
+				#print op
 				split=op.split('; "')
 				#the purpose of splitting by ; should be to split at ; "
 				#to remove example phrases.  we want to keep normal clauses
 				#separated by semicolons in.
 				""""debuggin"""
-				if split[0].strip("...") != split[0]:
+				if split[0].rstrip("...") != split[0]:
 					print word,"ENDS WITH DOT DOT DOT"
+					#if the string ends with "...", then split with ;
+					#instead of ; ".  This would make the string shorter.
 				return check(split[0].strip("...").strip())
                                 #we stripped "..." from the results,
                                 #but we should also ensure that the last sentence isn't
