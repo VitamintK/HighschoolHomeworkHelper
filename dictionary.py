@@ -26,7 +26,7 @@ def get_def(word):
 	except:
 		print "Please check your internet connection and try again"
 		return
-	content=obj.read()
+	content=unicode(obj.read(),errors='ignore')
 	obj.close()
 	content=content[2:-10]
 	dic=ast.literal_eval(content)

@@ -101,7 +101,7 @@ def homeworkify(terms,prenum = '', postnum = '.', splitter = ': ',subject="",fil
                 except:
                     tried.append(term)
                     defin = 'all terms not found'
-        homework_str+=str(i) + postnum + ' ' + term + splitter + defin.encode('ascii', 'ignore') + '\n'
+        homework_str+=str(i) + postnum + ' ' + term + splitter + defin + '\n'
     return homework_str
         
 """def get_google_def(word):
