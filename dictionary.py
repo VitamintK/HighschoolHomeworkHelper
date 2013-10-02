@@ -3,10 +3,14 @@ Uses the unofficial google dictionary API
 Author:Sridarshan Shetty (India)
 Twitter: http://twitter.com/sridarshan
 Website: http://sridarshan.co.cc
+
+edited by Kevin Wang
 """
 import urllib,ast,sys
+def checkq(string):
+	return string.replace("&quot;", '"')
 def check(string):
-	return string.replace("&#39","'")
+	return string.replace("&#39;","'")
 def get_def(word):
 	if len(sys.argv)!=1:
 		words=sys.argv[1:]
@@ -44,9 +48,20 @@ def get_def(word):
 		
 			if i["type"]=="meaning":
 				ans=i["terms"]
-				op=ans[0]['text']
-				split=op.split(';')
-				return check(split[0].strip())
+				op=check(checkq(ans[0]['text']))
+				print op
+				split=op.split('; "')
+				#the purpose of splitting by ; should be to split at ; "
+				#to remove example phrases.  we want to keep normal clauses
+				#separated by semicolons in.
+				""""debuggin"""
+				if split[0].strip("...") != split[0]:
+					print word,"ENDS WITH DOT DOT DOT"
+				return check(split[0].strip("...").strip())
+                                #we stripped "..." from the results,
+                                #but we should also ensure that the last sentence isn't
+                                #a fragment.
+                                #Either use wikipedia or strip the whole last clause.
 				count=0
 				for i in split:
 					if count!=0:
