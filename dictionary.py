@@ -39,7 +39,7 @@ def get_def(word):
 		for i in webdef:
 			if index==2: #changed from 11 to 2.
 				break
-			print word#," :",
+			#print word#," :",
 			index+=1
 		
 			if i["type"]=="meaning":
@@ -53,7 +53,7 @@ def get_def(word):
 						pass #print "      "+check(i) #this prints example sentences.
 					count+=1
 	else:
-		print "Description unavailable"
+		pass#print "Description unavailable for " + word<--debug messages were getting annoying
 			
 #if __name__=="__main__":get_def()
 	

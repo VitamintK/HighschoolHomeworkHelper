@@ -1,6 +1,7 @@
 #import requests
 #import json
 from dictionary import *
+from random import randint
 
 def parse_glos(file1):
     with open(file1,'r') as p:
@@ -40,6 +41,7 @@ def parse_glos(file1):
     return terms
 
 def vocab_ui(file1):
+    """old"""
     glos = parse_glos(file1)
     while True:
         term = raw_input('Enter the first vocab term: ').lower()
@@ -49,7 +51,7 @@ def vocab_ui(file1):
             print 'sorry, term is not found or the program sucks.'
 
 def homeworkify_ui(file1):
-    #1 by 1
+    """input the terms one by one, and return a homeworkified list."""
     terms = []
     term= 'none'
     print 'type q after you are finished'
@@ -60,24 +62,31 @@ def homeworkify_ui(file1):
         terms.append(term.strip())
     return homeworkify(file1,terms)
 
-def homeworkify_ui_batch(file1):
+def homeworkify_ui_batch(subject="", file1=None):
+    """input a comma separated list, and return a homeworkified list."""
     terms = raw_input('Enter terms separated by commas: ')
     terms = [term.strip() for term in terms.split(',')]
-    return homeworkify(file1,terms)
+    return homeworkify(terms,subject=subject,file1=file1)
 
-def homeworkify(file1,terms,prenum = '', postnum = '.', splitter = ': '):
-    glos = parse_glos(file1)
+def homeworkify(terms,prenum = '', postnum = '.', splitter = ': ',subject="",file1=None):
+    """homeworkifies a list of terms."""
+    if file1:
+        glos = parse_glos(file1)
     i= 0
     homework_str = ''
     for term in (term.lower() for term in terms):
         i+=1
         try:
-            defin = get_def(term)
+            #adding the subject here first searches for the term specific to the subject
+            defin = get_def(term+" "+subject)
             if defin is None:
+                #if the specific term is not found, search for the general term.
+                defin = get_def(term)
+            if defin is None:
+                #if there is still no term, substitute with a random term.
                 raise TypeError
         except:
             print term + ' not found'
-            from random import randint
             #defin = glos.items()[randint(0,len(glos))][1] <- gets random def
             tried = []
             while set(tried) != set(terms):
@@ -85,13 +94,14 @@ def homeworkify(file1,terms,prenum = '', postnum = '.', splitter = ': '):
                 try:
                    # defin = glos[term]
                     defin = get_def(term)
+                    print "  attempting to replace it with ",term
                     if defin is None:
                         raise TypeError
                     break
                 except:
                     tried.append(term)
                     defin = 'all terms not found'
-        homework_str+=str(i) + postnum + ' ' + term + splitter + defin + '\n'
+        homework_str+=str(i) + postnum + ' ' + term + splitter + defin.encode('ascii', 'ignore') + '\n'
     return homework_str
         
 """def get_google_def(word):
