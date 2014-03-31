@@ -75,6 +75,13 @@ def homeworkify_ui_batch(subject="", file1=None):
     terms = [term.strip() for term in terms.split(',')]
     return homeworkify(terms,subject=subject,file1=file1)
 
+def homeworkify_batch(terms,subject="",file1=None):
+    terms = alphanumeric(terms)
+    #sanitizing here is more efficient than doing it in homeworkify()
+    #although cleaning out the extra chars in homeworkify would be better.
+    terms = [term.strip() for term in terms.split(',')]
+    return homeworkify(terms,subject=subject,file1=file1)
+
 def homeworkify(terms,prenum = '', postnum = '.', splitter = ': ',subject="",file1=None):
     """homeworkifies a list of terms."""
     if file1:
